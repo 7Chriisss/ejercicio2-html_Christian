@@ -1,0 +1,30 @@
+name: Validar proyecto
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Validar HTML
+        run: npx --yes html-validate "**/*.html"
+
+      - name: Validar JavaScript
+        run: npx --yes eslint "**/*.js"
+
+      - name: Validar CSS
+        run: npx --yes stylelint "**/*.css"
